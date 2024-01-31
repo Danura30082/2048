@@ -34,7 +34,7 @@ function keytester(event) {
     if (event.key == "ArrowUp") { haut(); x = x + 1; }
     if (event.key == "ArrowDown") { bas(); x = x + 1; }
     if (event.key == "ArrowLeft") { gauche(); x = x + 1; }
-    if (event.key == "ArrowRight") { droite(); x = x + 1; }
+    if (event.key == "ArrowRight") { droite(); rightAll(); x = x + 1; }
     if (event.key == "t") { changeTitre("Nouveau titre"); }
     if (event.key == "s") { score(); }
     if (event.key == "i") { testInit(); }
@@ -200,7 +200,7 @@ function testisEmpty() {
             }
         }
     }
-    
+
 }
 function moveRight(i) {
     for (let j = 3; j >= 0; j--) {
@@ -298,7 +298,7 @@ function testMoveDown() {
 }
 function fusionRight(i) {
     for (let j = 3; j >= 1; j--) {
-        if ((getCell(i, j).innerHTML == getCell(i, j - 1).innerHTML)&& (getCell(i, j).innerHTML != "*")) {
+        if ((getCell(i, j).innerHTML == getCell(i, j - 1).innerHTML) && (getCell(i, j).innerHTML != "*")) {
             setValue(i, j, getCell(i, j).innerHTML * 2);
             setValue(i, j - 1, "*");
         }
@@ -315,7 +315,7 @@ function testFusionRight() {
 }
 function fusionLeft(i) {
     for (let j = 0; j <= 2; j++) {
-        if ((getCell(i, j).innerHTML == getCell(i, j + 1).innerHTML)&& (getCell(i, j).innerHTML != "*")) {
+        if ((getCell(i, j).innerHTML == getCell(i, j + 1).innerHTML) && (getCell(i, j).innerHTML != "*")) {
             setValue(i, j, getCell(i, j).innerHTML * 2);
             setValue(i, j + 1, "*");
         }
@@ -333,7 +333,7 @@ function testFusionLeft() {
 
 function fusionUp(j) {
     for (let i = 0; i <= 2; i++) {
-        if ((getCell(i, j).innerHTML == getCell(i + 1, j).innerHTML)&& (getCell(i, j).innerHTML != "*")) {
+        if ((getCell(i, j).innerHTML == getCell(i + 1, j).innerHTML) && (getCell(i, j).innerHTML != "*")) {
             setValue(i, j, getCell(i, j).innerHTML * 2);
             setValue(i + 1, j, "*");
         }
@@ -351,7 +351,7 @@ function testFusionUp() {
 
 function fusionDown(j) {
     for (let i = 3; i >= 1; i--) {
-        if ((getCell(i, j).innerHTML == getCell(i - 1, j).innerHTML)&& (getCell(i, j).innerHTML != "*")) {
+        if ((getCell(i, j).innerHTML == getCell(i - 1, j).innerHTML) && (getCell(i, j).innerHTML != "*")) {
             setValue(i, j, getCell(i, j).innerHTML * 2);
             setValue(i - 1, j, "*");
         }
@@ -365,4 +365,21 @@ function testFusionDown() {
     for (let j = 0; j < 4; j++) {
         fusionDown(j);
     }
+}
+function right(i) {
+    moveRight(i);
+    fusionRight(i);
+    moveRight(i);
+}
+function rightAll() {
+    for (let i = 0; i < 4; i++) {
+        right(i);
+    }
+}
+function testRightAll() {
+    setRow(0, "*", "*", "2", "*");
+    setRow(1, "2", "*", "2", "*");
+    setRow(2, "2", "*", "2", "2");
+    setRow(3, "4", "2", "*", "4");
+    rightAll();
 }
