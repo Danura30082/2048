@@ -11,8 +11,10 @@ window.onload = (event) => {
     // testShowRow();
     // testShowCol();
     // testSetRow();
-    // init();
-    testisEmpty();
+    init();
+    newGame();
+    testMoveRight();
+    // testisEmpty();
 };
 
 document.addEventListener('keyup', (event) => {
@@ -207,4 +209,26 @@ function testisEmpty() {
         }
     }
     
+}
+function moveRight(i) {
+    for (let j = 3; j >= 0; j--) {
+        if (getCell(i, j).innerHTML == "*") {
+            for (let k = j - 1; k >= 0; k--) {
+                if (getCell(i, k).innerHTML != "*") {
+                    setValue(i, j, getCell(i, k).innerHTML);
+                    setValue(i, k, "*");
+                    break;
+                }
+            }
+        }
+    }
+}
+function testMoveRight() {
+    setRow(0, "*", "*", "2", "*");
+    setRow(1, "4", "*", "2", "*");
+    setRow(2, "2", "*", "2", "2");
+    setRow(3, "4", "2", "*", "4");
+    for (let i = 0; i < 4; i++) {
+        moveRight(i);
+    }
 }
