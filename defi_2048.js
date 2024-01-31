@@ -7,10 +7,10 @@ window.onload = (event) => {
     // testGetTable ();
     // testGetCell();
     // testGetValeurCell();
-    // testSetValeurCell();
+    // testsetValue();
     // testShowRow();
     // testShowCol();
-    testSetRow();
+    // testSetRow();
 
 };
 
@@ -59,6 +59,9 @@ function keytester(event) {
 
         score()
     }
+    if (event.key == "i") {
+        testInit()
+    }
 }
 function changeTitre(Nouveau_titre) {
     title = document.getElementById("titre");
@@ -97,14 +100,14 @@ function testGetValeurCell() {
     console.log(getValeurCell(2, 2));
     console.log(getValeurCell(3, 3));
 }
-function setValeurCell(i, j, valeur) {
+function setValue(i, j, valeur) {
     getCell(i, j).innerHTML = valeur;
 }
-function testSetValeurCell() {
-    setValeurCell(0, 0, 1);
-    setValeurCell(1, 1, 2);
-    setValeurCell(2, 2, 3);
-    setValeurCell(3, 3, 4);
+function testsetValue() {
+    setValue(0, 0, 1);
+    setValue(1, 1, 2);
+    setValue(2, 2, 3);
+    setValue(3, 3, 4);
 }
 function showRow(i) {
     valeur = "";
@@ -136,7 +139,7 @@ function testShowCol() {
 function setRow(i, a,b,c,d) {
     valeur = [a,b,c,d];
     for (j = 0; j < 4; j++) {
-        setValeurCell(i, j, valeur[j]);
+        setValue(i, j, valeur[j]);
     }
 }
 function testSetRow() {
@@ -144,4 +147,21 @@ function testSetRow() {
     setRow(1,5,6,7,8);
     setRow(2,9,10,11,12);
     setRow(3,13,14,15,16);
+}
+function init(){
+    var tab = [
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+  [13, 14, 15, 16]
+    ];
+    
+    for(let i=0;i<=3;i++){
+        for(let j=0;j<=3;j++){
+            setValue(i,j,tab[i][j]); 
+        }
+    }
+}
+function testInit(){
+    init();
 }
