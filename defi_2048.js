@@ -1,5 +1,12 @@
 testbonjour();
 var x = 0;
+
+
+window.onload = (event) => {
+    console.log('page is fully loaded');
+    testGetTable ();
+};
+
 document.addEventListener('keyup', (event)=> {
     keytester(event);
 });
@@ -55,4 +62,13 @@ function score(){
     console.log("score : ",x)
     scoretext = document.getElementById("score");
     scoretext.innerHTML = "Score : " + x;
+}
+function getTable(){
+    table= document.getElementById("table");
+    return table;
+    
+}
+function testGetTable ()
+{
+    console.log(getTable());
 }
