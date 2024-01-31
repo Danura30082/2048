@@ -62,6 +62,9 @@ function keytester(event) {
     if (event.key == "i") {
         testInit()
     }
+    if (event.key == "a") {
+        testGetRandomInt()
+    }
 }
 function changeTitre(Nouveau_titre) {
     title = document.getElementById("titre");
@@ -165,3 +168,13 @@ function init(){
 function testInit(){
     init();
 }
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function testGetRandomInt(){
+    setValue(getRandomInt(0,3),getRandomInt(0,3),"@");
+    setValue(getRandomInt(0,3),getRandomInt(0,3),"@");
+}
+
