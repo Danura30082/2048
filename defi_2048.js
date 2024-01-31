@@ -68,6 +68,9 @@ function keytester(event) {
     if (event.key == "r") {
         testGetRandom2or4()
     }
+    if (event.key == "n") {
+        newGame()
+    }
 }
 function changeTitre(Nouveau_titre) {
     title = document.getElementById("titre");
@@ -142,33 +145,33 @@ function testShowCol() {
     showCol(2);
     showCol(3);
 }
-function setRow(i, a,b,c,d) {
-    valeur = [a,b,c,d];
+function setRow(i, a, b, c, d) {
+    valeur = [a, b, c, d];
     for (j = 0; j < 4; j++) {
         setValue(i, j, valeur[j]);
     }
 }
 function testSetRow() {
-    setRow(0,1,2,3,4);
-    setRow(1,5,6,7,8);
-    setRow(2,9,10,11,12);
-    setRow(3,13,14,15,16);
+    setRow(0, 1, 2, 3, 4);
+    setRow(1, 5, 6, 7, 8);
+    setRow(2, 9, 10, 11, 12);
+    setRow(3, 13, 14, 15, 16);
 }
-function init(){
+function init() {
     var tab = [
-  [1, 2, 3, 4],
-  [5, 6, 7, 8],
-  [9, 10, 11, 12],
-  [13, 14, 15, 16]
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 16]
     ];
-    
-    for(let i=0;i<=3;i++){
-        for(let j=0;j<=3;j++){
-            setValue(i,j,tab[i][j]); 
+
+    for (let i = 0; i <= 3; i++) {
+        for (let j = 0; j <= 3; j++) {
+            setValue(i, j, tab[i][j]);
         }
     }
 }
-function testInit(){
+function testInit() {
     init();
 }
 function getRandomInt(min, max) {
@@ -176,20 +179,34 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-function testGetRandomInt(){
-    setValue(getRandomInt(0,3),getRandomInt(0,3),"@");
-    setValue(getRandomInt(0,3),getRandomInt(0,3),"@");
+function testGetRandomInt() {
+    setValue(getRandomInt(0, 3), getRandomInt(0, 3), "@");
+    setValue(getRandomInt(0, 3), getRandomInt(0, 3), "@");
 }
-function getRandom2or4(percent){
-    if(getRandomInt(0,100)<percent){
+function getRandom2or4(percent) {
+    if (getRandomInt(0, 100) < percent) {
         return 2;
     }
-    else{
+    else {
         return 4;
     }
 }
-function testGetRandom2or4(){
-    for(let i=0;i<100;i++){
+function testGetRandom2or4() {
+    for (let i = 0; i < 100; i++) {
         console.log(getRandom2or4(80));
+    }
+}
+function newGame() {
+    flag = true;
+    while (flag) {
+        valeur = []
+        for (let i = 0; i < 4; i++) {
+            valeur.push(getRandomInt(0, 3));
+        }
+        if (valeur[0] != valeur[2] || valeur[1] != valeur[3]) { // On test si c'est pas les meme case
+            setValue(valeur[0], valeur[1], getRandom2or4(85));
+            setValue(valeur[2], valeur[3], getRandom2or4(85));
+            flag = false;
+        }
     }
 }
