@@ -47,10 +47,12 @@ function keytester(event){
     }
 }
 function changeTitre(Nouveau_titre){
-    title= document.getElementsByTagName("h1");
-    title[0].innerHTML = Nouveau_titre;
+    title= document.getElementById("titre");
+    title.innerHTML = Nouveau_titre;
+    console.log(title)
 }
 function score(){
     console.log("score : ",x)
-    
+    scoretext = document.getElementById("score");
+    scoretext.innerHTML = "Score : " + x;
 }
