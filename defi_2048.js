@@ -1,15 +1,10 @@
 testBonjour();
 var Score = 0;
 
-
-
 window.onload = (event) => {
     console.log('page is fully loaded');
     init();
     newGame();
-    testFusionUp();
-    testHasEmpty();
-    testGetEmpty();
 };
 
 document.addEventListener('keyup', (event) => {
@@ -23,22 +18,42 @@ function testBonjour() {
 }
 function haut() {
     console.log("haut");
-    if (upAll()) { Score += 1; }
+    if (upAll()) { 
+        Score += 1;
+        var coord = getEmpty();
+        random = getRandom2or4(85);
+        setValue(coord[0], coord[1], random);
+    }
     else { console.log("Pas de mouvement ni de fusion possible") }
 }
 function bas() {
     console.log("bas");
-    if (downAll()) { Score += 1; }
+    if (downAll()) { 
+        Score += 1;
+        var coord = getEmpty();
+        random = getRandom2or4(85);
+        setValue(coord[0], coord[1], random);
+    }
     else { console.log("Pas de mouvement ni de fusion possible") }
 }
 function gauche() {
     console.log("gauche");
-    if (leftAll()) { Score += 1; }
+    if (leftAll()) { 
+        Score += 1;
+        var coord = getEmpty();
+        random = getRandom2or4(85);
+        setValue(coord[0], coord[1], random); 
+    }
     else { console.log("Pas de mouvement ni de fusion possible") }
 }
 function droite() {
     console.log("droite");
-    if (rightAll()) { Score += 1; }
+    if (rightAll()) { 
+        Score += 1;
+        var coord = getEmpty();
+        random = getRandom2or4(85);
+        setValue(coord[0], coord[1], random);
+    }
     else { console.log("Pas de mouvement ni de fusion possible") }
 }
 
@@ -516,9 +531,8 @@ function getEmpty() {
     }
 }
 function testGetEmpty() {
-var coord = getEmpty();
-var i = coord[0];
-var j = coord[1];
-console.log(i,j);
-
+    var coord = getEmpty();
+    var i = coord[0];
+    var j = coord[1];
+    console.log(i, j);
 }
