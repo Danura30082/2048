@@ -75,10 +75,10 @@ function testGetTable ()
 }
 function getCell(i,j){
     table = getTable();
-    return table.rows[j].cells[i];
+    return table.rows[i].cells[j];
 }
 function testGetCell(){
-    console.log(getCell(0,0).innerHTML);
-    console.log(getCell(2,1).innerHTML);
-    console.log(getCell(0,2).innerHTML);
+    console.log(parseInt(getCell(0,0).innerHTML)+1);
+    console.log(parseInt(getCell(1,2).innerHTML)+1);
+    console.log(parseInt(getCell(2,0).innerHTML)+1);
 }
