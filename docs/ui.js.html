@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ui.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ui.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { getCell,newNumber,hasEmpty,set_Board } from './utils.js';
+import { STATE } from './state.js';
+import { save_Game_State,getCookie } from './cookie.js';
+import { leftAll,rightAll,upAll,downAll } from './mouvement.js';
+
+
+/**
+ * Colors the cells according to their value.
+ * @returns {void}
+ * @see {@link getCell}
+ */
+export function colorCells() {
+    for (let i = 0; i &lt; 4; i++) {
+        for (let j = 0; j &lt; 4; j++) {
+            let cell = getCell(i, j);
+            let value = cell.innerHTML;
+            cell.className = 'cell-' + value;
+            if (value == "*") {
+                cell.className = 'cell-star';
+            }
+            if (value >= 2048) {
+                cell.className = 'cell-2048';
+            }
+        }
+    }
+}
+
+/**
+ * Checks if the game is won.
+ * If the game is over because it is won, it creates a win screen with a button to continu.
+ * @returns {void}
+ */
+function Victory() {
+    if (!STATE.has_already_won) {
+        for (let i = 0; i &lt;= 3; i++) {
+            for (let j = 0; j &lt;= 3; j++) {
+                if (getCell(i, j).innerHTML == "2048") {
+                    console.log("Vous avez gagné");
+                    STATE.has_already_won = true;
+                    // Create win screen
+                    var winScreen = document.createElement('div');
+                    winScreen.className = 'win-screen';
+                    winScreen.innerHTML = 'You won!';
+
+                    // Create continue button
+                    var continueButton = document.createElement('button');
+                    continueButton.innerHTML = 'Continue playing';
+                    continueButton.onclick = function () {
+                        winScreen.remove(); // Remove win screen when continue button is clicked
+                    };
+
+                    // Append continue button to win screen
+                    winScreen.appendChild(continueButton);
+
+                    // Append win screen to game container
+                    var gameContainer = document.querySelector('.game-container');
+                    gameContainer.appendChild(winScreen);
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Checks if the game is over.
+ * If the game is over becaus it is lost, it creates a game over screen.
+ * @returns {void}
+ */
+export function GameOver() {
+    if (!hasEmpty()) {
+        save_Game_State();
+        if (!leftAll()) {
+            if (!rightAll()) {
+                if (!upAll()) {
+                    if (!downAll()) {
+                        console.log("Game Over");
+                        if (!document.querySelector('.game-over')) {
+                            var gameOverScreen = document.createElement('div');
+                            gameOverScreen.className = 'game-over';
+                            gameOverScreen.innerHTML = 'Game Over';
+                            var gameContainer = document.querySelector('.game-container');
+                            gameContainer.appendChild(gameOverScreen);
+                            /* document.getElementById('game-over-overlay').classList.remove('hidden'); */
+                        }
+                    }
+                }
+            }
+        }
+        STATE.Game_State = getCookie('game_state');
+        set_Board(STATE.Game_State.slice(0, 4));
+    }
+}
+
+/**
+ * Updates the game board.
+ * @see {@link newNumber}
+ * @see {@link save_Game_State}
+ * @see {@link GameOver}
+ * @see {@link colorCells}
+ * @see {@link score}
+ * @see {@link Victory}
+ * @returns {void}
+ * 
+ */
+export function update() {
+    Victory();
+    newNumber();
+    save_Game_State();
+    GameOver();
+    colorCells();
+    score();
+}
+
+/**
+ * Updates the score and the best score.
+ * @returns {void}
+ */
+export function score() {
+    /* console.log("score : ", Score) */
+    let scoretext = document.getElementById("score");
+    let best_scoretext = document.getElementById("best-score");
+    scoretext.innerHTML = STATE.Score;
+    if (STATE.Score > best_scoretext.innerHTML) {
+        best_scoretext.innerHTML = STATE.Score;
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameOver">GameOver</a></li><li><a href="global.html#Victory">Victory</a></li><li><a href="global.html#bas">bas</a></li><li><a href="global.html#colorCells">colorCells</a></li><li><a href="global.html#down">down</a></li><li><a href="global.html#downAll">downAll</a></li><li><a href="global.html#droite">droite</a></li><li><a href="global.html#fusionDown">fusionDown</a></li><li><a href="global.html#fusionLeft">fusionLeft</a></li><li><a href="global.html#fusionRight">fusionRight</a></li><li><a href="global.html#fusionUp">fusionUp</a></li><li><a href="global.html#gauche">gauche</a></li><li><a href="global.html#getCell">getCell</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getEmpty">getEmpty</a></li><li><a href="global.html#getRandom2or4">getRandom2or4</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getTable">getTable</a></li><li><a href="global.html#hasEmpty">hasEmpty</a></li><li><a href="global.html#haut">haut</a></li><li><a href="global.html#isEmpty">isEmpty</a></li><li><a href="global.html#keytester">keytester</a></li><li><a href="global.html#left">left</a></li><li><a href="global.html#leftAll">leftAll</a></li><li><a href="global.html#moveDown">moveDown</a></li><li><a href="global.html#moveLeft">moveLeft</a></li><li><a href="global.html#moveRight">moveRight</a></li><li><a href="global.html#moveUp">moveUp</a></li><li><a href="global.html#newGame">newGame</a></li><li><a href="global.html#newNumber">newNumber</a></li><li><a href="global.html#right">right</a></li><li><a href="global.html#rightAll">rightAll</a></li><li><a href="global.html#save_Game_State">save_Game_State</a></li><li><a href="global.html#score">score</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#set_Board">set_Board</a></li><li><a href="global.html#showRow">showRow</a></li><li><a href="global.html#up">up</a></li><li><a href="global.html#upAll">upAll</a></li><li><a href="global.html#update">update</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Feb 11 2025 14:16:45 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
