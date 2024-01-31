@@ -9,6 +9,7 @@ window.onload = (event) => {
     newGame();
     testFusionUp();
     testHasEmpty();
+    testGetEmpty();
 };
 
 document.addEventListener('keyup', (event) => {
@@ -22,23 +23,23 @@ function testBonjour() {
 }
 function haut() {
     console.log("haut");
-    if (upAll()){Score += 1;}
-    else{console.log("Pas de mouvement ni de fusion possible")}
+    if (upAll()) { Score += 1; }
+    else { console.log("Pas de mouvement ni de fusion possible") }
 }
 function bas() {
     console.log("bas");
-    if (downAll()){Score += 1;}
-    else{console.log("Pas de mouvement ni de fusion possible")}
+    if (downAll()) { Score += 1; }
+    else { console.log("Pas de mouvement ni de fusion possible") }
 }
 function gauche() {
     console.log("gauche");
-    if (leftAll()){Score += 1;}
-    else{console.log("Pas de mouvement ni de fusion possible")}
+    if (leftAll()) { Score += 1; }
+    else { console.log("Pas de mouvement ni de fusion possible") }
 }
 function droite() {
     console.log("droite");
-    if (rightAll()){Score += 1;}
-    else{console.log("Pas de mouvement ni de fusion possible")}
+    if (rightAll()) { Score += 1; }
+    else { console.log("Pas de mouvement ni de fusion possible") }
 }
 
 function keytester(event) {
@@ -402,16 +403,16 @@ function testFusionDown() {
 }
 function right(i) {
     var hasChanged = moveRight(i) + fusionRight(i) + moveRight(i);
-    if(hasChanged!=0){hasChanged = true;}
+    if (hasChanged != 0) { hasChanged = true; }
     return hasChanged;
 }
 function rightAll() {
     var hasChanged = false;
     for (let i = 0; i < 4; i++) {
         hasChanged += right(i);
-        
+
     }
-    if(hasChanged!=0){hasChanged = true;}
+    if (hasChanged != 0) { hasChanged = true; }
     return hasChanged;
 }
 function testRightAll() {
@@ -423,7 +424,7 @@ function testRightAll() {
 }
 function left(i) {
     var hasChanged = moveLeft(i) + fusionLeft(i) + moveLeft(i);
-    if(hasChanged!=0){hasChanged = true;}
+    if (hasChanged != 0) { hasChanged = true; }
     return hasChanged;
 }
 function leftAll() {
@@ -431,7 +432,7 @@ function leftAll() {
     for (let i = 0; i < 4; i++) {
         hasChanged += left(i);
     }
-    if(hasChanged!=0){hasChanged = true;}
+    if (hasChanged != 0) { hasChanged = true; }
     return hasChanged;
 }
 function testLeftAll() {
@@ -442,8 +443,8 @@ function testLeftAll() {
     leftAll();
 }
 function up(j) {
-    var hasChanged = moveUp(j) + fusionUp(j) ||+oveUp(j);
-    if(hasChanged!=0){hasChanged = true;}
+    var hasChanged = moveUp(j) + fusionUp(j) || +oveUp(j);
+    if (hasChanged != 0) { hasChanged = true; }
     return hasChanged;
 }
 function upAll() {
@@ -451,7 +452,7 @@ function upAll() {
     for (let j = 0; j < 4; j++) {
         hasChanged += up(j);
     }
-    if(hasChanged!=0){hasChanged = true;}
+    if (hasChanged != 0) { hasChanged = true; }
     return hasChanged;
 }
 function testUpAll() {
@@ -463,7 +464,7 @@ function testUpAll() {
 }
 function down(j) {
     var hasChanged = moveDown(j) + fusionDown(j) + moveDown(j);
-    if(hasChanged!=0){hasChanged = true;}
+    if (hasChanged != 0) { hasChanged = true; }
     return hasChanged;
 }
 function downAll() {
@@ -471,7 +472,7 @@ function downAll() {
     for (let j = 0; j < 4; j++) {
         hasChanged += down(j);
     }
-    if(hasChanged!=0){hasChanged = true;}
+    if (hasChanged != 0) { hasChanged = true; }
     return hasChanged;
 }
 function testDownAll() {
@@ -481,7 +482,7 @@ function testDownAll() {
     setCol(3, "4", "2", "*", "4");
     downAll();
 }
-function hasEmpty(){
+function hasEmpty() {
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j <= 3; j++) {
             if (isEmpty(i, j)) {
@@ -491,15 +492,33 @@ function hasEmpty(){
     }
     return false;
 }
-function testHasEmpty(){
+function testHasEmpty() {
     setCol(0, "1", "2", "3", "4");
     setCol(1, "5", "6", "7", "8");
     setCol(2, "9", "10", "11", "12");
     setCol(3, "13", "14", "15", "16");
-    console.log("isempty:",hasEmpty());
+    console.log("isempty:", hasEmpty());
     setCol(0, "1", "2", "3", "4");
     setCol(1, "5", "6", "7", "8");
     setCol(2, "9", "10", "11", "12");
     setCol(3, "13", "14", "15", "*");
-    console.log("isempty:",hasEmpty());
+    console.log("isempty:", hasEmpty());
+}
+function getEmpty() {
+    if (hasEmpty()) {
+        var i = getRandomInt(0, 3);
+        var j = getRandomInt(0, 3);
+        while (!(isEmpty(i, j))) {
+            i = getRandomInt(0, 3);
+            j = getRandomInt(0, 3);
+        }
+        return [i, j];
+    }
+}
+function testGetEmpty() {
+var coord = getEmpty();
+var i = coord[0];
+var j = coord[1];
+console.log(i,j);
+
 }
