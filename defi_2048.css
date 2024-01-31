@@ -1,25 +1,240 @@
-h1 {
-    color:red;
-    text-align: center;
+
+@charset "UTF-8";
+html,
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 18px;
+  background: #faf8ef;
+  color: #776e65;
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
 }
-body {text-align:center;}
-table.center {
-    margin-left:auto; 
-    margin-right:auto;
-  }
+body {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.heading {
+  margin-bottom: 8px;
+  width: 80vmin;
+}
+h1.title {
+  font-size: 80px;
+  font-weight: bold;
+  margin: 0;
+  display: block;
+  float: left;
+  
+}
+
+
+.score-container{
+  float: right;
+  flex-grow: 0;
+  flex-shrink: 0;
+  position: relative;
+  display: block;
+  background: #bbada0;
+  padding: 15px 25px;
+  font-size: 25px;
+  height: 25px;
+  line-height: 47px;
+  font-weight: bold;
+  border-radius: 3px;
+  color: white;
+  margin-top: 8px;
+  text-align: center;
+}
+.score-container-title {
+  position: absolute;
+  width: 100%;
+  top: 10px;
+  left: 0;
+  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 13px;
+  text-align: center;
+  color: #eee4da;
+}
+.scores-container {
+  float: right;
+  vertical-align: middle;
+  display: flex;
+  align-items: stretch;
+}
+.scores-container * + * {
+  margin-left: 5px;
+}
+.game-controls {
+  float: right;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    flex-direction: column;
+    
+    
+}
+.new-game-container {
+  display: block;
+  justify-content: center;
+  position: relative;
+  background: #bbada0;
+  font-size: 25px;
+  height: 55px;
+  padding: 0px 0px;
+  line-height: 47px;
+  font-weight: bold;
+  border-radius: 3px;
+  color: white;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  text-align: center;
+  font-weight: bold;
+
+}
+
+#new-game-button {
+  flex-grow: 1;
+  height: 100%;
+  width: 100%;
+  font-size: 25px; /* Adjust as needed */
+  font-weight: bold; /* Adjust as needed */
+
+  /* Other styles... */
+}
+
+#new-game-button {
+  /* Style the button */
+  background-color: #bbada0;  /* CHANGE ME TO #bbada0 */
+  color: #f9f6f2;
+  border: none;
+  /* padding: 10px 20px; */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 3px;
+  font-size: 25px;
+
+
+  font-size: 24px;
+  /* margin: 4px 2px; */
+  cursor: pointer;
+}
+
+
+
+
+#game-container {
+  width: 80vmin;
+  height: 80vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
 table {
-    border-collapse:collapse;
-    border-style:solid; 
-    border-color:black;
-    width: 500px;
-    height: 500px;
-    table-layout: fixed;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  td { 
+  border-collapse: collapse;
+  font-size: 175%;
+  text-align: center;
+  border-style: solid;
+  border-color: #8F7A66;
+  background-color: #CDC1B4;
+  border-width: 10px;
+  table-layout: fixed;
+  font-weight: bold;
+  width:80vmin;
+  height:80vmin;
+  border-radius: 60px;
+  position: relative;
+  
+}
 
-    border-style:solid; 
-    border-color:black;
+td {
+  
+  border-style: solid;
+  border-color: #8F7A66;
+  background-color: #CDC1B4;
+  box-sizing: border-box;
+  border-width: 10px;
+  border-radius: 3px;
+}
 
-    }
+.cell-2 {
+  background-color: #eee4da;
+  color: #776e65;
+}
+.cell-4 {
+  background-color: #ede0c8;
+  color: #776e65;
+}
+.cell-8 {
+  color: #f9f6f2;
+  background-color: #f2b179;
+}
+.cell-16 {
+  color: #f9f6f2;
+  background-color: #f59563;
+}
+.cell-32 {
+  color: #f9f6f2;
+  background-color: #f67c5f;
+}
+.cell-64 {
+  color: #f9f6f2;
+  background-color: #f65e3b;
+}
+.cell-128 {
+  color: #f9f6f2;
+  background-color: #edcf72;
+}
+.cell-256 {
+  color: #f9f6f2;
+  background-color: #edcc61;
+}
+.cell-512 {
+  color: #f9f6f2;
+  background-color: #edc850;
+}
+.cell-1024 {
+  color: #f9f6f2;
+  background-color: #edc53f;
+}
+.cell-2048 {
+  color: #f9f6f2;
+  background-color: #edc22e;
+}
+
+#game-over-overlay {
+  z-index: 1;
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 80vmin;
+  height: 80vmin;
+  margin: auto;
+  margin-bottom: 0px ;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay-content {
+  color: white;
+  font-size: 2em;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+

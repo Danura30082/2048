@@ -1,38 +1,64 @@
-<html>
-    <!DOCTYPE html>
+<!DOCTYPE html>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 <head id="titre">
     <title>Ma page</title>
     <link href="defi_2048.css" rel="stylesheet">
-    <script type = "text/javascript" src="defi_2048.js"></script>
+    <script type="text/javascript" src="defi_2048.js"></script>
 </head>
-<h1>Mon Titre</h1>
-<table id="table">
-    <tr>
-        <td>E</td>
-        <td>N</td>
-        <td>O</td>
-        <td>P</td>
-    </tr>
-    <tr>
-        <td>F</td>
-        <td>48</td>
-        <td>60</td>
-        <td>20</td>
-    </tr>
-    <tr>
-        <td>G</td>
-        <td>44</td>
-        <td>86</td>
-        <td>98</td>
-    </tr>
-    <tr>
-        <td>H</td>
-        <td>46</td>
-        <td>96</td>
-        <td>82</td>
-    </tr>
-</table>
-<div id="score"> Score : 0 
+<div class="heading">
+    <h1 class="title">2048</h1>
+    <div class="game-controls">
+        <div class="scores-container">
+            <div class="score-container">
+                <div class="score-container-title">Score</div>
+                <div id="score"> 0 </div>
+            </div>
+            <div class="score-container">
+                <div class="score-container-title">Best</div>
+                <div id="best-score"> 0 </div>
+            </div>
+        </div>
+        <div class="new-game-container">
+            <button id="new-game-button" onclick="newGame()">New Game</button>
+        </div>
 
-</div>
+    </div>
+    </div>
+    <div class="game-container">
+        
+        <div id="game-over-overlay" class="overlay hidden">
+            <div class="overlay-content">
+              <h2>Game Over</h2>
+            </div>
+        </div>
+        <table id="table">
+            <tr>
+                <td>*</td>
+                <td>*</td>
+                <td>*</td>
+                <td>*</td>
+            </tr>
+            <tr>
+                <td>*</td>
+                <td>*</td>
+                <td>*</td>
+                <td>*</td>
+            </tr>
+            <tr>
+                <td>*</td>
+                <td>*</td>
+                <td>*</td>
+                <td>*</td>
+            </tr>
+            <tr>
+                <td>*</td>
+                <td>*</td>
+                <td>*</td>
+                <td>*</td>
+            </tr>
+        </table>
+        
+    </div>
+
+
 </html>
