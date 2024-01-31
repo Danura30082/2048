@@ -6,7 +6,7 @@ window.onload = (event) => {
     console.log('page is fully loaded');
     init();
     newGame();
-    testMoveDown();
+    testFusionRight();
 };
 
 document.addEventListener('keyup', (event) => {
@@ -294,5 +294,22 @@ function testMoveDown() {
     setCol(3, "4", "2", "*", "4");
     for (let j = 0; j < 4; j++) {
         moveDown(j);
+    }
+}
+function fusionRight(i) {
+    for (let j = 3; j >= 1; j--) {
+        if ((getCell(i, j).innerHTML == getCell(i, j - 1).innerHTML)&& (getCell(i, j).innerHTML != "*")) {
+            setValue(i, j, getCell(i, j).innerHTML * 2);
+            setValue(i, j - 1, "*");
+        }
+    }
+}
+function testFusionRight() {
+    setRow(0, "*", "*", "2", "2");
+    setRow(1, "4", "4", "2", "2");
+    setRow(2, "*", "2", "2", "2");
+    setRow(3, "*", "2", "2", "4");
+    for (let i = 0; i < 4; i++) {
+        fusionRight(i);
     }
 }
