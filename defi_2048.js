@@ -65,6 +65,9 @@ function keytester(event) {
     if (event.key == "a") {
         testGetRandomInt()
     }
+    if (event.key == "r") {
+        testGetRandom2or4()
+    }
 }
 function changeTitre(Nouveau_titre) {
     title = document.getElementById("titre");
@@ -177,4 +180,16 @@ function testGetRandomInt(){
     setValue(getRandomInt(0,3),getRandomInt(0,3),"@");
     setValue(getRandomInt(0,3),getRandomInt(0,3),"@");
 }
-
+function getRandom2or4(percent){
+    if(getRandomInt(0,100)<percent){
+        return 2;
+    }
+    else{
+        return 4;
+    }
+}
+function testGetRandom2or4(){
+    for(let i=0;i<100;i++){
+        console.log(getRandom2or4(80));
+    }
+}
