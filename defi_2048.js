@@ -6,7 +6,7 @@ window.onload = (event) => {
     console.log('page is fully loaded');
     init();
     newGame();
-    testFusionLeft();
+    testFusionUp();
 };
 
 document.addEventListener('keyup', (event) => {
@@ -328,5 +328,41 @@ function testFusionLeft() {
     setRow(3, "*", "2", "2", "4");
     for (let i = 0; i < 4; i++) {
         fusionLeft(i);
+    }
+}
+
+function fusionUp(j) {
+    for (let i = 0; i <= 2; i++) {
+        if ((getCell(i, j).innerHTML == getCell(i + 1, j).innerHTML)&& (getCell(i, j).innerHTML != "*")) {
+            setValue(i, j, getCell(i, j).innerHTML * 2);
+            setValue(i + 1, j, "*");
+        }
+    }
+}
+function testFusionUp() {
+    setCol(0, "*", "*", "2", "2");
+    setCol(1, "4", "4", "2", "2");
+    setCol(2, "*", "2", "2", "2");
+    setCol(3, "*", "2", "2", "4");
+    for (let j = 0; j < 4; j++) {
+        fusionUp(j);
+    }
+}
+
+function fusionDown(j) {
+    for (let i = 3; i >= 1; i--) {
+        if ((getCell(i, j).innerHTML == getCell(i - 1, j).innerHTML)&& (getCell(i, j).innerHTML != "*")) {
+            setValue(i, j, getCell(i, j).innerHTML * 2);
+            setValue(i - 1, j, "*");
+        }
+    }
+}
+function testFusionDown() {
+    setCol(0, "*", "*", "2", "2");
+    setCol(1, "4", "4", "2", "2");
+    setCol(2, "*", "2", "2", "2");
+    setCol(3, "*", "2", "2", "4");
+    for (let j = 0; j < 4; j++) {
+        fusionDown(j);
     }
 }
