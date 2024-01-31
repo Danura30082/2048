@@ -6,7 +6,7 @@ window.onload = (event) => {
     console.log('page is fully loaded');
     init();
     newGame();
-    testMoveLeft();
+    testMoveUp();
 };
 
 document.addEventListener('keyup', (event) => {
@@ -244,5 +244,33 @@ function testMoveLeft() {
     setRow(3, "4", "2", "*", "4");
     for (let i = 0; i < 4; i++) {
         moveLeft(i);
+    }
+}
+function moveUp(j) {
+    for (let i = 0; i <= 3; i++) {
+        if (getCell(i, j).innerHTML == "*") {
+            for (let k = i + 1; k <= 3; k++) {
+                if (getCell(k, j).innerHTML != "*") {
+                    setValue(i, j, getCell(k, j).innerHTML);
+                    setValue(k, j, "*");
+                    break;
+                }
+            }
+        }
+    }
+}
+function setCol(j, a, b, c, d) {
+    valeur = [a, b, c, d];
+    for (i = 0; i < 4; i++) {
+        setValue(i, j, valeur[i]);
+    }
+}
+function testMoveUp() {
+    setCol(0, "*", "*", "2", "*");
+    setCol(1, "4", "*", "2", "*");
+    setCol(2, "2", "*", "2", "2");
+    setCol(3, "4", "2", "*", "4");
+    for (let j = 0; j < 4; j++) {
+        moveUp(j);
     }
 }
