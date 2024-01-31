@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: defi_2048.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: defi_2048.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//import
+import {getCell,newNumber,setValue,hasEmpty} from './utils.js';
+import {colorCells,Victory } from './ui.js';
+import {STATE} from './State.js';
+
+
+/**
+ * This function is called when the page is loaded.
+ * It creates a new game if there is no cookie, or loads the game from the cookie.
+ * It also adds an event listener for the keyup event.
+ * @param {Event} event - The event that triggered the function.
+ */
+window.onload = (event) => {
+    // If there is no cookie, we create a new game
+    if (getCookie('game_state') == null) {
+        STATE.Game_State = [["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        [0, 0]];
+        newGame();
+    }
+    // If there is a cookie, we load the game from the cookie
+    else {
+        STATE.Game_State = getCookie('game_state');
+        set_Board(STATE.Game_State.slice(0, 4));
+        STATE.Score = Number(STATE.Game_State[4][0]);
+        document.getElementById("best-score").innerHTML = Number(STATE.Game_State[4][1]);
+        colorCells();
+    }
+    // Add event listener for keyup event (when a key is released)
+    document.addEventListener('keyup', (event) => {
+        keytester(event);
+    });
+    document.getElementById('new-game-button').addEventListener('click', newGame);
+
+};
+
+/**
+ * This function is called when a key is released.
+ * If the key is an arrow key, it calls the corresponding function.
+ * If the key is the "r" key, it resets the game.
+ * @param {KeyboardEvent} event - The event that triggered the function.
+ * @returns {void}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+ */
+function keytester(event) {
+    if (event.key == "ArrowUp") { haut(); }
+    if (event.key == "ArrowDown") { bas(); }
+    if (event.key == "ArrowLeft") { gauche(); }
+    if (event.key == "ArrowRight") { droite(); }
+    if (event.key == "u") {update();}
+    // Reset the game completely
+    if (event.key == "r") {
+        newGame();
+        document.getElementById("best-score").innerHTML = 0;
+    }
+    if (event.key == "w") {
+        let Board = [[1024, 1024, 1024, 512],
+        [32, 64, 128, 256],
+        [16, 8, 4, 2],
+        [2, 2, 2, 2]];
+        set_Board(Board);
+    }
+    if (event.key == "l") {
+        let Board = [[2, 4, 2, 4],
+        [4, 2, 4, 2],
+        [2, 4, 2, 4],
+        [4, 2, 4, 2]];
+        set_Board(Board);
+    }
+    
+}
+/**
+ * Saves the current game state in a cookie.
+ * The game state is saved as a 2D array of strings.
+ * The first 4 elements of the array are the rows of the game board.
+ * The last element of the array is the score and the best score.
+ * @returns {void}
+ */
+function save_Game_State() {
+    var valeur = [];
+    for (let i = 0; i &lt; 4; i++) {
+        valeur.push(showRow(i).split(','));
+    }
+    valeur.push([STATE.Score, Number(document.getElementById("best-score").innerHTML)]);
+    document.cookie = "game_state = " + JSON.stringify(valeur);
+    var cookieValue = document.cookie;
+    console.log(cookieValue);
+}
+
+/**
+ * Gets the value of a cookie.
+ * @param {string} name - The name of the cookie to get.
+ * @returns {Array} The value of the cookie.
+ */
+function getCookie(name) {
+    let cookieArray = document.cookie.split('; ');
+
+    for (let i = 0; i &lt; cookieArray.length; i++) {
+        let cookiePair = cookieArray[i].split('=');
+
+        if (name == cookiePair[0]) {
+            return JSON.parse(cookiePair[1]);
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Returns a string representation of a row in the game board.
+ * @param {number} i - The index of the row.
+ * @returns {string} A string representation of a row in the game board separated by commas.
+ */
+function showRow(i) {
+
+    let valeur = "";
+    for (let j = 0; j &lt; 4; j++) {
+        valeur += getCell(i, j).innerHTML + ",";
+    }
+    valeur = valeur.slice(0, -1); // Remove the last character
+    return valeur;
+}
+
+/**
+ * Returns a string representation of a column in the game board.
+ * @param {number} j - The index of the column.
+ * @returns {string} A string representation of a column in the game board separated by spaces.
+ */
+function showCol(j) {
+    
+    let valeur = "";
+    for ( let i = 0; i &lt; 4; i++) {
+        valeur += getCell(i, j).innerHTML + " ";
+    }
+
+}
+
+/**
+ * Sets the value of a row in the game board.
+ * @param {number} i - The index of the row.
+ * @param {number} a - The value of the first cell.
+ * @param {number} b - The value of the second cell.
+ * @param {number} c - The value of the third cell.
+ * @param {number} d - The value of the fourth cell.
+ * @returns {void}
+ */
+function setRow(i, a, b, c, d) {
+    let valeur = [a, b, c, d];
+    for (let j = 0; j &lt; 4; j++) {
+        setValue(i, j, valeur[j]);
+    }
+}
+
+/**
+ * Sets the value of a column in the game board.
+ * @param {number} j - The index of the column.
+ * @param {number} a - The value of the first cell.
+ * @param {number} b - The value of the second cell.
+ * @param {number} c - The value of the third cell.
+ * @param {number} d - The value of the fourth cell.
+ * @returns {void}
+ */
+function setCol(j, a, b, c, d) {
+    let valeur = [a, b, c, d];
+    for (let i = 0; i &lt; 4; i++) {
+        setValue(i, j, valeur[i]);
+    }
+}
+
+
+
+
+
+/**
+ * Moves all the cells in the game board to the left.
+ * If the game board has changed, it adds a new number to the game board.
+ * @see {@link update}
+ * @see {@link leftAll}
+ * @returns {void}
+ */
+function gauche() {
+    /* console.log("gauche"); */
+    if (leftAll()) { update(); }
+    else { console.log("Pas de mouvement ni de fusion possible"); GameOver(); }
+}
+
+/**
+ * Moves all the cells in one row the game board to the left.
+ * @param {number} i - The index of the row.
+ * @returns {boolean} True if the row has changed, false otherwise
+ */
+function moveLeft(i) {
+    var hasMoved = false;
+    for (let j = 0; j &lt;= 3; j++) {
+        if (getCell(i, j).innerHTML == "*") {
+            for (let k = j + 1; k &lt;= 3; k++) {
+                if (getCell(i, k).innerHTML != "*") {
+                    hasMoved = true;
+                    setValue(i, j, getCell(i, k).innerHTML);
+                    setValue(i, k, "*");
+                    break;
+                }
+            }
+        }
+    }
+    return hasMoved;
+}
+
+/**
+ * Fuses all the cells in one row the game board to the right. 
+ * Increases the score if two cells are fused by the value of the fused cell.
+ * @param {number} i - The index of the row.
+ * @returns {boolean} True if the row has changed, false otherwise
+ */
+function fusionLeft(i) {
+    var hasFused = false;
+    for (let j = 0; j &lt;= 2; j++) {
+        if ((getCell(i, j).innerHTML == getCell(i, j + 1).innerHTML) &amp;&amp; (getCell(i, j).innerHTML != "*")) {
+            hasFused = true;
+            STATE.Score += Number(getCell(i, j).innerHTML * 2);
+            setValue(i, j, getCell(i, j).innerHTML * 2);
+            setValue(i, j + 1, "*");
+        }
+    }
+    return hasFused;
+}
+
+/**
+ * Moves and fuses all the cells in a row to the Left. 
+ * @see {@link moveLeft}
+ * @see {@link fusionLeft}
+ * @param {number} i - The index of the row.
+ * @returns {boolean} True if the game board has changed, false otherwise
+ */
+function left(i) {
+    var hasChanged = moveLeft(i) + fusionLeft(i) + moveLeft(i);
+    if (hasChanged != 0) { hasChanged = true; }
+    return hasChanged;
+}
+
+/**
+ * Moves all the cells in the game board to the left.
+ * @see {@link left}
+ * @returns {boolean} True if the game board has changed, false otherwise
+ */
+function leftAll() {
+    var hasChanged = false;
+    for (let i = 0; i &lt; 4; i++) {
+        hasChanged += left(i);
+    }
+    if (hasChanged != 0) { hasChanged = true; }
+    return hasChanged;
+}
+
+/**
+ * Moves and fuses all the cells in one row the game board to the right.
+ * @param {number} i - The index of the row.
+ * @see {@link moveRight}
+ * @see {@link fusionRight}
+ * @returns {boolean} True if the row has changed, false otherwise
+ */
+function right(i) {
+
+    var hasChanged = moveRight(i) + fusionRight(i) + moveRight(i);
+    if (hasChanged != 0) { hasChanged = true; }
+    return hasChanged;
+}
+
+/**
+ * Moves all the cells in the game board to the right.
+ * @see {@link right}
+ * @returns {boolean} True if the game board has changed, false otherwise
+ */
+function rightAll() {
+    var hasChanged = false;
+    for (let i = 0; i &lt; 4; i++) {
+        hasChanged += right(i);
+
+    }
+    if (hasChanged != 0) { hasChanged = true; }
+    return hasChanged;
+}
+
+/**
+ * Fuses all the cells in one row the game board to the right.
+ * Increases the score if two cells are fused by the value of the fused cell.
+ * @param {number} i - The index of the row.
+ * @returns {boolean} True if the row has changed, false otherwise
+ */
+function fusionRight(i) {
+    var hasFused = false;
+    for (let j = 3; j >= 1; j--) {
+        if ((getCell(i, j).innerHTML == getCell(i, j - 1).innerHTML) &amp;&amp; (getCell(i, j).innerHTML != "*")) {
+            hasFused = true;
+            STATE.Score += Number(getCell(i, j).innerHTML * 2);
+            setValue(i, j, getCell(i, j).innerHTML * 2);
+            setValue(i, j - 1, "*");
+        }
+    }
+    return hasFused;
+}
+
+/**
+ * Moves all the cells in one row the game board to the right.
+ * @param {number} i - The index of the row.
+ * @returns {boolean} True if the row has changed, false otherwise
+ */
+function moveRight(i) {
+    var hasMoved = false;
+    for (let j = 3; j >= 0; j--) {
+        if (getCell(i, j).innerHTML == "*") {
+            for (let k = j - 1; k >= 0; k--) {
+                if (getCell(i, k).innerHTML != "*") {
+                    hasMoved = true;
+                    setValue(i, j, getCell(i, k).innerHTML);
+                    setValue(i, k, "*");
+                    break;
+                }
+            }
+        }
+    }
+    return hasMoved;
+}
+
+/**
+ * Moves all the cells in the game board to the right.
+ * If the game board has changed, it adds a new number to the game board.
+ * @see {@link rightAll}
+ * @see {@link update}
+ * @returns {void}
+ */
+function droite() {
+    if (rightAll()) { update(); }
+    else { console.log("Pas de mouvement ni de fusion possible"); GameOver(); }
+}
+
+/** 
+ * Moves all numbers in the specified column down.
+ * @param {number} j - The index of the column.
+ * @see {@link moveDown}
+ * @see {@link fusionDown}
+ * @return {boolean} True if the column has changed as a result of the move, false otherwise.
+ */
+function down(j) {
+    var hasChanged = moveDown(j) + fusionDown(j) + moveDown(j);
+    if (hasChanged != 0) { hasChanged = true; }
+    return hasChanged;
+}
+
+/** 
+ * Moves all numbers in all columns down.
+ * @return {boolean} True if any column has changed as a result of the move, false otherwise.
+ */
+function downAll() {
+    var hasChanged = false;
+    for (let j = 0; j &lt; 4; j++) {
+        hasChanged += down(j);
+    }
+    if (hasChanged != 0) { hasChanged = true; }
+    return hasChanged;
+}
+
+/** 
+ * Fuses numbers in the specified column down.
+ * Increases the score if two cells are fused by the value of the fused cell.
+ * @param {number} j - The index of the column.
+ * @return {boolean} True if any numbers in the column have been fused, false otherwise.
+ */
+function fusionDown(j) {
+    var hasFused = false;
+    for (let i = 3; i >= 1; i--) {
+        if ((getCell(i, j).innerHTML == getCell(i - 1, j).innerHTML) &amp;&amp; (getCell(i, j).innerHTML != "*")) {
+            hasFused = true;
+            STATE.Score += Number(getCell(i, j).innerHTML * 2);
+            setValue(i, j, getCell(i, j).innerHTML * 2);
+            setValue(i - 1, j, "*");
+        }
+    }
+    return hasFused;
+}
+
+/** 
+ * Moves numbers in the specified column down.
+ * @param {number} j - The index of the column.
+ * @return {boolean} True if any numbers in the column have been moved, false otherwise.
+ */
+function moveDown(j) {
+    var hasMoved = false;
+    for (let i = 3; i >= 0; i--) {
+        if (getCell(i, j).innerHTML == "*") {
+            for (let k = i - 1; k >= 0; k--) {
+                if (getCell(k, j).innerHTML != "*") {
+                    hasMoved = true;
+                    setValue(i, j, getCell(k, j).innerHTML);
+                    setValue(k, j, "*");
+                    break;
+                }
+            }
+        }
+    }
+    return hasMoved;
+}
+
+/** 
+ * Moves all numbers in the specified column down.
+ * If the game board has changed, it updates the game board.
+ * @see {@link downAll}
+ * @see {@link update}
+ * @returns {void}
+ */
+function bas() {
+    /* console.log("bas"); */
+    if (downAll()) { update(); }
+    else { console.log("Pas de mouvement ni de fusion possible"); GameOver(); }
+}
+
+/** 
+ * Moves all numbers in the specified column up.
+ * If the game board has changed, it updates the game board.
+ * @see {@link upAll}
+ */
+function haut() {
+    /* console.log("haut"); */
+    if (upAll()) { update(); }
+    else { console.log("Pas de mouvement ni de fusion possible"); GameOver(); }
+}
+
+/**
+ * Moves all numbers in the specified column up.
+ * @param {number} j - The index of the column.
+ * @see {@link moveUp}
+ * @see {@link fusionUp}
+ * @return {boolean} True if the column has changed as a result of the move, false otherwise.
+ */
+function up(j) {
+    var hasChanged = moveUp(j) + fusionUp(j) + moveUp(j);
+    if (hasChanged != 0) { hasChanged = true; }
+    return hasChanged;
+}
+
+/**
+ * Moves all numbers in all columns up.
+ * @return {boolean} True if any column has changed as a result of the move, false otherwise.
+ * @see {@link up}
+ */
+function upAll() {
+    var hasChanged = false;
+    for (let j = 0; j &lt; 4; j++) {
+        hasChanged += up(j);
+    }
+    if (hasChanged != 0) { hasChanged = true; }
+    return hasChanged;
+}
+
+/**
+ * Fuses numbers in the specified column up.
+ * Increases the score if two cells are fused by the value of the fused cell.
+ * @param {number} j - The index of the column.
+ * @return {boolean} True if any numbers in the column have been fused, false otherwise.
+ */
+function fusionUp(j) {
+    var hasFused = false;
+    for (let i = 0; i &lt;= 2; i++) {
+        if ((getCell(i, j).innerHTML == getCell(i + 1, j).innerHTML) &amp;&amp; (getCell(i, j).innerHTML != "*")) {
+            hasFused = true;
+            STATE.Score += Number(getCell(i, j).innerHTML * 2);
+            setValue(i, j, getCell(i, j).innerHTML * 2);
+            setValue(i + 1, j, "*");
+        }
+    }
+    return hasFused;
+}
+
+/**
+ * Moves numbers in the specified column up.
+ * @param {number} j - The index of the column.
+ * @return {boolean} True if any numbers in the column have been moved, false otherwise.
+ */
+function moveUp(j) {
+    var hasMoved = false;
+    for (let i = 0; i &lt;= 3; i++) {
+        if (getCell(i, j).innerHTML == "*") {
+            for (let k = i + 1; k &lt;= 3; k++) {
+                hasMoved = true;
+                if (getCell(k, j).innerHTML != "*") {
+                    setValue(i, j, getCell(k, j).innerHTML);
+                    setValue(k, j, "*");
+                    break;
+                }
+            }
+        }
+    }
+    return hasMoved;
+}
+
+/**
+ * Updates the score and the best score.
+ * @returns {void}
+ */
+function score() {
+    /* console.log("score : ", Score) */
+    let scoretext = document.getElementById("score");
+    let best_scoretext = document.getElementById("best-score");
+    scoretext.innerHTML = STATE.Score;
+    if (STATE.Score > best_scoretext.innerHTML) {
+        best_scoretext.innerHTML = STATE.Score;
+    }
+}
+
+
+
+
+
+/**
+ * Creates a new game.
+ * resets the score and the game board.
+ * removes the game over screen if it exists.
+ * positions two random numbers on the game board.
+ * @see {@link newNumber}
+ * @returns {void}
+ * @see {@link set_Board}
+ */
+function newGame() {
+    STATE.Score = 0;
+    STATE.has_already_won = false;
+    score();
+    set_Board();
+    if (document.querySelector('.game-over')) {
+        document.querySelector('.game-over').remove();
+    }
+    newNumber();
+    newNumber();
+    colorCells();
+}
+
+
+
+
+
+/**
+ * Sets the game board to the specified board.
+ * @param {Array} Board - The board to set the game board to. Set an empty board if no board is specified.
+ * @returns {void}
+ */
+function set_Board(Board = null) {
+    if (Board == null) {
+        var Board = [
+            ["*", "*", "*", "*"],
+            ["*", "*", "*", "*"],
+            ["*", "*", "*", "*"],
+            ["*", "*", "*", "*"]
+        ];
+    }
+
+    for (let i = 0; i &lt;= 3; i++) {
+        for (let j = 0; j &lt;= 3; j++) {
+            setValue(i, j, Board[i][j]);
+        }
+    }
+}
+
+/**
+ * Changes the title of the page.
+ * @param {string} Nouveau_titre - The new title of the page.
+ * @returns {void}
+ */
+function changeTitre(Nouveau_titre) {
+    title = document.getElementById("titre");
+    title.innerHTML = Nouveau_titre;
+    console.log(title)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Checks if the game is over.
+ * If the game is over becaus it is lost, it creates a game over screen.
+ * @returns {void}
+ */
+function GameOver() {
+    if (!hasEmpty()) {
+        save_Game_State();
+        if (!leftAll()) {
+            if (!rightAll()) {
+                if (!upAll()) {
+                    if (!downAll()) {
+                        console.log("Game Over");
+                        if (!document.querySelector('.game-over')) {
+                            var gameOverScreen = document.createElement('div');
+                            gameOverScreen.className = 'game-over';
+                            gameOverScreen.innerHTML = 'Game Over';
+                            var gameContainer = document.querySelector('.game-container');
+                            gameContainer.appendChild(gameOverScreen);
+                            /* document.getElementById('game-over-overlay').classList.remove('hidden'); */
+                        }
+                    }
+                }
+            }
+        }
+        STATE.Game_State = getCookie('game_state');
+        set_Board(STATE.Game_State.slice(0, 4));
+    }
+}
+
+
+
+
+
+
+/**
+ * Updates the game board.
+ * @see {@link newNumber}
+ * @see {@link save_Game_State}
+ * @see {@link GameOver}
+ * @see {@link colorCells}
+ * @see {@link score}
+ * @see {@link Victory}
+ * @returns {void}
+ * 
+ */
+function update() {
+    Victory();
+    newNumber();
+    save_Game_State();
+    GameOver();
+    colorCells();
+    score();
+}
+//#endregion </code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameOver">GameOver</a></li><li><a href="global.html#Victory">Victory</a></li><li><a href="global.html#bas">bas</a></li><li><a href="global.html#changeTitre">changeTitre</a></li><li><a href="global.html#colorCells">colorCells</a></li><li><a href="global.html#down">down</a></li><li><a href="global.html#downAll">downAll</a></li><li><a href="global.html#droite">droite</a></li><li><a href="global.html#fusionDown">fusionDown</a></li><li><a href="global.html#fusionLeft">fusionLeft</a></li><li><a href="global.html#fusionRight">fusionRight</a></li><li><a href="global.html#fusionUp">fusionUp</a></li><li><a href="global.html#gauche">gauche</a></li><li><a href="global.html#getCell">getCell</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getEmpty">getEmpty</a></li><li><a href="global.html#getRandom2or4">getRandom2or4</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getTable">getTable</a></li><li><a href="global.html#hasEmpty">hasEmpty</a></li><li><a href="global.html#haut">haut</a></li><li><a href="global.html#isEmpty">isEmpty</a></li><li><a href="global.html#keytester">keytester</a></li><li><a href="global.html#left">left</a></li><li><a href="global.html#leftAll">leftAll</a></li><li><a href="global.html#moveDown">moveDown</a></li><li><a href="global.html#moveLeft">moveLeft</a></li><li><a href="global.html#moveRight">moveRight</a></li><li><a href="global.html#moveUp">moveUp</a></li><li><a href="global.html#newGame">newGame</a></li><li><a href="global.html#newNumber">newNumber</a></li><li><a href="global.html#right">right</a></li><li><a href="global.html#rightAll">rightAll</a></li><li><a href="global.html#save_Game_State">save_Game_State</a></li><li><a href="global.html#score">score</a></li><li><a href="global.html#setCol">setCol</a></li><li><a href="global.html#setRow">setRow</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#set_Board">set_Board</a></li><li><a href="global.html#showCol">showCol</a></li><li><a href="global.html#showRow">showRow</a></li><li><a href="global.html#up">up</a></li><li><a href="global.html#upAll">upAll</a></li><li><a href="global.html#update">update</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 01:56:33 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

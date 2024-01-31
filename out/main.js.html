@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//import
+import {newNumber,set_Board} from './utils.js';
+import {colorCells,score,update} from './ui.js';
+import {STATE} from './state.js';
+import {haut,bas,gauche,droite} from './mouvement.js';
+import {getCookie} from './cookie.js';
+
+
+/**
+ * This function is called when the page is loaded.
+ * It creates a new game if there is no cookie, or loads the game from the cookie.
+ * It also adds an event listener for the keyup event.
+ * @param {Event} event - The event that triggered the function.
+ */
+window.onload = (event) => {
+    // If there is no cookie, we create a new game
+    if (getCookie('game_state') == null) {
+        STATE.Game_State = [["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        [0, 0]];
+        newGame();
+    }
+    // If there is a cookie, we load the game from the cookie
+    else {
+        STATE.Game_State = getCookie('game_state');
+        set_Board(STATE.Game_State.slice(0, 4));
+        STATE.Score = Number(STATE.Game_State[4][0]);
+        document.getElementById("best-score").innerHTML = Number(STATE.Game_State[4][1]);
+        colorCells();
+    }
+    // Add event listener for keyup event (when a key is released)
+    document.addEventListener('keyup', (event) => {
+        keytester(event);
+    });
+    document.getElementById('new-game-button').addEventListener('click', newGame);
+
+};
+
+/**
+ * This function is called when a key is released.
+ * If the key is an arrow key, it calls the corresponding function.
+ * If the key is the "r" key, it resets the game.
+ * @param {KeyboardEvent} event - The event that triggered the function.
+ * @returns {void}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+ */
+function keytester(event) {
+    if (event.key == "ArrowUp") { haut(); }
+    if (event.key == "ArrowDown") { bas(); }
+    if (event.key == "ArrowLeft") { gauche(); }
+    if (event.key == "ArrowRight") { droite(); }
+    if (event.key == "u") {update();}
+    // Reset the game completely
+    if (event.key == "r") {
+        newGame();
+        document.getElementById("best-score").innerHTML = 0;
+    }
+    if (event.key == "w") {
+        let Board = [[1024, 1024, 1024, 512],
+        [32, 64, 128, 256],
+        [16, 8, 4, 2],
+        [2, 2, 2, 2]];
+        set_Board(Board);
+    }
+    if (event.key == "l") {
+        let Board = [[2, 4, 2, 4],
+        [4, 2, 4, 2],
+        [2, 4, 2, 4],
+        [4, 2, 4, 2]];
+        set_Board(Board);
+    }
+    
+}
+
+
+
+
+/**
+ * Creates a new game.
+ * resets the score and the game board.
+ * removes the game over screen if it exists.
+ * positions two random numbers on the game board.
+ * @see {@link newNumber}
+ * @returns {void}
+ * @see {@link set_Board}
+ */
+function newGame() {
+    STATE.Score = 0;
+    STATE.has_already_won = false;
+    score();
+    set_Board();
+    if (document.querySelector('.game-over')) {
+        document.querySelector('.game-over').remove();
+    }
+    newNumber();
+    newNumber();
+    colorCells();
+}
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GameOver">GameOver</a></li><li><a href="global.html#Victory">Victory</a></li><li><a href="global.html#bas">bas</a></li><li><a href="global.html#colorCells">colorCells</a></li><li><a href="global.html#down">down</a></li><li><a href="global.html#downAll">downAll</a></li><li><a href="global.html#droite">droite</a></li><li><a href="global.html#fusionDown">fusionDown</a></li><li><a href="global.html#fusionLeft">fusionLeft</a></li><li><a href="global.html#fusionRight">fusionRight</a></li><li><a href="global.html#fusionUp">fusionUp</a></li><li><a href="global.html#gauche">gauche</a></li><li><a href="global.html#getCell">getCell</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getEmpty">getEmpty</a></li><li><a href="global.html#getRandom2or4">getRandom2or4</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getTable">getTable</a></li><li><a href="global.html#hasEmpty">hasEmpty</a></li><li><a href="global.html#haut">haut</a></li><li><a href="global.html#isEmpty">isEmpty</a></li><li><a href="global.html#keytester">keytester</a></li><li><a href="global.html#left">left</a></li><li><a href="global.html#leftAll">leftAll</a></li><li><a href="global.html#moveDown">moveDown</a></li><li><a href="global.html#moveLeft">moveLeft</a></li><li><a href="global.html#moveRight">moveRight</a></li><li><a href="global.html#moveUp">moveUp</a></li><li><a href="global.html#newGame">newGame</a></li><li><a href="global.html#newNumber">newNumber</a></li><li><a href="global.html#right">right</a></li><li><a href="global.html#rightAll">rightAll</a></li><li><a href="global.html#save_Game_State">save_Game_State</a></li><li><a href="global.html#score">score</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#set_Board">set_Board</a></li><li><a href="global.html#showRow">showRow</a></li><li><a href="global.html#up">up</a></li><li><a href="global.html#upAll">upAll</a></li><li><a href="global.html#update">update</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 18:34:13 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
