@@ -4,17 +4,9 @@ var x = 0;
 
 window.onload = (event) => {
     console.log('page is fully loaded');
-    // testGetTable ();
-    // testGetCell();
-    // testgetValeur();
-    // testsetValue();
-    // testShowRow();
-    // testShowCol();
-    // testSetRow();
     init();
     newGame();
-    testMoveRight();
-    // testisEmpty();
+    testMoveLeft();
 };
 
 document.addEventListener('keyup', (event) => {
@@ -230,5 +222,27 @@ function testMoveRight() {
     setRow(3, "4", "2", "*", "4");
     for (let i = 0; i < 4; i++) {
         moveRight(i);
+    }
+}
+function moveLeft(i) {
+    for (let j = 0; j <= 3; j++) {
+        if (getCell(i, j).innerHTML == "*") {
+            for (let k = j + 1; k <= 3; k++) {
+                if (getCell(i, k).innerHTML != "*") {
+                    setValue(i, j, getCell(i, k).innerHTML);
+                    setValue(i, k, "*");
+                    break;
+                }
+            }
+        }
+    }
+}
+function testMoveLeft() {
+    setRow(0, "*", "*", "2", "*");
+    setRow(1, "4", "*", "2", "*");
+    setRow(2, "2", "*", "2", "2");
+    setRow(3, "4", "2", "*", "4");
+    for (let i = 0; i < 4; i++) {
+        moveLeft(i);
     }
 }
