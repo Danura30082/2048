@@ -6,6 +6,7 @@ window.onload = (event) => {
     console.log('page is fully loaded');
     testGetTable ();
     testGetCell();
+    testValeurCell();
 };
 
 document.addEventListener('keyup', (event)=> {
@@ -81,4 +82,14 @@ function testGetCell(){
     console.log(parseInt(getCell(0,0).innerHTML)+1);
     console.log(parseInt(getCell(1,2).innerHTML)+1);
     console.log(parseInt(getCell(2,0).innerHTML)+1);
+}   
+
+function getValeurCell(i,j){
+    return parseInt(getCell(i,j).innerHTML);
+}
+function testValeurCell(){
+    console.log(getValeurCell(0,0));
+    console.log(getValeurCell(1,1));
+    console.log(getValeurCell(2,2));
+    console.log(getValeurCell(3,3));
 }
