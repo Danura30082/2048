@@ -6,7 +6,7 @@ window.onload = (event) => {
     console.log('page is fully loaded');
     init();
     newGame();
-    testMoveUp();
+    testMoveDown();
 };
 
 document.addEventListener('keyup', (event) => {
@@ -272,5 +272,27 @@ function testMoveUp() {
     setCol(3, "4", "2", "*", "4");
     for (let j = 0; j < 4; j++) {
         moveUp(j);
+    }
+}
+function moveDown(j) {
+    for (let i = 3; i >= 0; i--) {
+        if (getCell(i, j).innerHTML == "*") {
+            for (let k = i - 1; k >= 0; k--) {
+                if (getCell(k, j).innerHTML != "*") {
+                    setValue(i, j, getCell(k, j).innerHTML);
+                    setValue(k, j, "*");
+                    break;
+                }
+            }
+        }
+    }
+}
+function testMoveDown() {
+    setCol(0, "*", "*", "2", "*");
+    setCol(1, "4", "*", "2", "*");
+    setCol(2, "2", "*", "2", "2");
+    setCol(3, "4", "2", "*", "4");
+    for (let j = 0; j < 4; j++) {
+        moveDown(j);
     }
 }
