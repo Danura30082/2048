@@ -19,16 +19,32 @@ function bonjour() {
 function testBonjour() {
     bonjour()
 }
-function haut() { console.log("haut") }
-function bas() { console.log("bas") }
-function gauche() { console.log("gauche") }
-function droite() { console.log("droite") }
+function haut() {
+    console.log("haut");
+    if (upAll()){Score += 1;}
+    else{console.log("Pas de mouvement ni de fusion possible")}
+}
+function bas() {
+    console.log("bas");
+    if (downAll()){Score += 1;}
+    else{console.log("Pas de mouvement ni de fusion possible")}
+}
+function gauche() {
+    console.log("gauche");
+    if (leftAll()){Score += 1;}
+    else{console.log("Pas de mouvement ni de fusion possible")}
+}
+function droite() {
+    console.log("droite");
+    if (rightAll()){Score += 1;}
+    else{console.log("Pas de mouvement ni de fusion possible")}
+}
 
 function keytester(event) {
-    if (event.key == "ArrowUp") { haut(); upAll(); Score = Score + 1; }
-    if (event.key == "ArrowDown") { bas(); downAll(); Score = Score + 1; }
-    if (event.key == "ArrowLeft") { gauche(); leftAll(); Score = Score + 1; }
-    if (event.key == "ArrowRight") { droite(); rightAll(); Score = Score + 1; }
+    if (event.key == "ArrowUp") { haut(); }
+    if (event.key == "ArrowDown") { bas(); }
+    if (event.key == "ArrowLeft") { gauche(); }
+    if (event.key == "ArrowRight") { droite(); }
     if (event.key == "t") { changeTitre("Nouveau titre"); }
     if (event.key == "s") { score(); }
     if (event.key == "i") { testInit(); }
@@ -138,7 +154,7 @@ function init() {
     }
 }
 function testInit() { init(); }
-    
+
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -384,14 +400,18 @@ function testFusionDown() {
     }
 }
 function right(i) {
-    console.log(moveRight(i));
-    console.log(fusionRight(i));
-    console.log(moveRight(i));
+    var hasChanged = moveRight(i) + fusionRight(i) + moveRight(i);
+    if(hasChanged!=0){hasChanged = true;}
+    return hasChanged;
 }
 function rightAll() {
+    var hasChanged = false;
     for (let i = 0; i < 4; i++) {
-        right(i);
+        hasChanged += right(i);
+        
     }
+    if(hasChanged!=0){hasChanged = true;}
+    return hasChanged;
 }
 function testRightAll() {
     setRow(0, "*", "*", "2", "*");
@@ -401,14 +421,17 @@ function testRightAll() {
     rightAll();
 }
 function left(i) {
-    console.log(moveLeft(i));
-    console.log(fusionLeft(i));
-    console.log(moveLeft(i));
+    var hasChanged = moveLeft(i) + fusionLeft(i) + moveLeft(i);
+    if(hasChanged!=0){hasChanged = true;}
+    return hasChanged;
 }
 function leftAll() {
+    var hasChanged = false;
     for (let i = 0; i < 4; i++) {
-        left(i);
+        hasChanged += left(i);
     }
+    if(hasChanged!=0){hasChanged = true;}
+    return hasChanged;
 }
 function testLeftAll() {
     setRow(0, "*", "*", "2", "*");
@@ -418,14 +441,17 @@ function testLeftAll() {
     leftAll();
 }
 function up(j) {
-    console.log(moveUp(j));
-    console.log(fusionUp(j));
-    console.log(moveUp(j));
+    var hasChanged = moveUp(j) + fusionUp(j) ||+oveUp(j);
+    if(hasChanged!=0){hasChanged = true;}
+    return hasChanged;
 }
 function upAll() {
+    var hasChanged = false;
     for (let j = 0; j < 4; j++) {
-        up(j);
+        hasChanged += up(j);
     }
+    if(hasChanged!=0){hasChanged = true;}
+    return hasChanged;
 }
 function testUpAll() {
     setCol(0, "*", "*", "2", "*");
@@ -435,14 +461,17 @@ function testUpAll() {
     upAll();
 }
 function down(j) {
-    console.log(moveDown(j));
-    console.log(fusionDown(j));
-    console.log(moveDown(j));
+    var hasChanged = moveDown(j) + fusionDown(j) + moveDown(j);
+    if(hasChanged!=0){hasChanged = true;}
+    return hasChanged;
 }
 function downAll() {
+    var hasChanged = false;
     for (let j = 0; j < 4; j++) {
-        down(j);
+        hasChanged += down(j);
     }
+    if(hasChanged!=0){hasChanged = true;}
+    return hasChanged;
 }
 function testDownAll() {
     setCol(0, "*", "*", "2", "*");
