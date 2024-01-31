@@ -1,4 +1,4 @@
-testbonjour();
+testBonjour();
 var x = 0;
 
 
@@ -6,10 +6,11 @@ window.onload = (event) => {
     console.log('page is fully loaded');
     // testGetTable ();
     // testGetCell();
-    // testgetValeurCell();
-    // testsetValeurCell();
-    // testshowRow();
-    testshowCol();
+    // testGetValeurCell();
+    // testSetValeurCell();
+    // testShowRow();
+    // testShowCol();
+    testSetRow();
 
 };
 
@@ -19,7 +20,7 @@ document.addEventListener('keyup', (event) => {
 function bonjour() {
     console.log("Bonjour")
 }
-function testbonjour() {
+function testBonjour() {
     bonjour()
 }
 function haut() {
@@ -90,7 +91,7 @@ function testGetCell() {
 function getValeurCell(i, j) {
     return parseInt(getCell(i, j).innerHTML);
 }
-function testgetValeurCell() {
+function testGetValeurCell() {
     console.log(getValeurCell(0, 0));
     console.log(getValeurCell(1, 1));
     console.log(getValeurCell(2, 2));
@@ -99,7 +100,7 @@ function testgetValeurCell() {
 function setValeurCell(i, j, valeur) {
     getCell(i, j).innerHTML = valeur;
 }
-function testsetValeurCell() {
+function testSetValeurCell() {
     setValeurCell(0, 0, 1);
     setValeurCell(1, 1, 2);
     setValeurCell(2, 2, 3);
@@ -113,7 +114,7 @@ function showRow(i) {
     console.log(valeur);
 
 }
-function testshowRow() {
+function testShowRow() {
     showRow(0);
     showRow(1);
     showRow(2);
@@ -126,9 +127,21 @@ function showCol(j) {
     }
     console.log(valeur);
 }
-function testshowCol() {
+function testShowCol() {
     showCol(0);
     showCol(1);
     showCol(2);
     showCol(3);
+}
+function setRow(i, a,b,c,d) {
+    valeur = [a,b,c,d];
+    for (j = 0; j < 4; j++) {
+        setValeurCell(i, j, valeur[j]);
+    }
+}
+function testSetRow() {
+    setRow(0,1,2,3,4);
+    setRow(1,5,6,7,8);
+    setRow(2,9,10,11,12);
+    setRow(3,13,14,15,16);
 }
