@@ -1,4 +1,5 @@
 testbonjour();
+
 document.addEventListener('keyup', (event)=> {
     keytester(event);
 });
@@ -33,4 +34,11 @@ function keytester(event){
     if (event.key == "ArrowRight"){
         droite()
     }
+    if (event.key == "t" ){
+        changeTitre("Nouveau titre")
+    }
+}
+function changeTitre(Nouveau_titre){
+    title= document.getElementsByTagName("h1");
+    title[0].innerHTML = Nouveau_titre;
 }
