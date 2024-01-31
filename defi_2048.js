@@ -1,5 +1,5 @@
 testBonjour();
-var x = 0;
+var Score = 0;
 
 
 
@@ -19,16 +19,16 @@ function bonjour() {
 function testBonjour() {
     bonjour()
 }
-function haut() {console.log("haut")}
-function bas() {console.log("bas")}
-function gauche() {console.log("gauche")}
-function droite() {console.log("droite")}
+function haut() { console.log("haut") }
+function bas() { console.log("bas") }
+function gauche() { console.log("gauche") }
+function droite() { console.log("droite") }
 
 function keytester(event) {
-    if (event.key == "ArrowUp") { haut(); upAll(); x = x + 1; }
-    if (event.key == "ArrowDown") { bas(); downAll(); x = x + 1; }
-    if (event.key == "ArrowLeft") { gauche(); leftAll(); x = x + 1; }
-    if (event.key == "ArrowRight") { droite(); rightAll(); x = x + 1; }
+    if (event.key == "ArrowUp") { haut(); upAll(); Score = Score + 1; }
+    if (event.key == "ArrowDown") { bas(); downAll(); Score = Score + 1; }
+    if (event.key == "ArrowLeft") { gauche(); leftAll(); Score = Score + 1; }
+    if (event.key == "ArrowRight") { droite(); rightAll(); Score = Score + 1; }
     if (event.key == "t") { changeTitre("Nouveau titre"); }
     if (event.key == "s") { score(); }
     if (event.key == "i") { testInit(); }
@@ -137,9 +137,8 @@ function init() {
         }
     }
 }
-function testInit() {
-    init();
-}
+function testInit() { init(); }
+    
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -197,10 +196,12 @@ function testisEmpty() {
 
 }
 function moveRight(i) {
+    var hasMoved = false;
     for (let j = 3; j >= 0; j--) {
         if (getCell(i, j).innerHTML == "*") {
             for (let k = j - 1; k >= 0; k--) {
                 if (getCell(i, k).innerHTML != "*") {
+                    hasMoved = true;
                     setValue(i, j, getCell(i, k).innerHTML);
                     setValue(i, k, "*");
                     break;
@@ -208,6 +209,7 @@ function moveRight(i) {
             }
         }
     }
+    return hasMoved;
 }
 function testMoveRight() {
     setRow(0, "*", "*", "2", "*");
@@ -219,10 +221,12 @@ function testMoveRight() {
     }
 }
 function moveLeft(i) {
+    var hasMoved = false;
     for (let j = 0; j <= 3; j++) {
         if (getCell(i, j).innerHTML == "*") {
             for (let k = j + 1; k <= 3; k++) {
                 if (getCell(i, k).innerHTML != "*") {
+                    hasMoved = true;
                     setValue(i, j, getCell(i, k).innerHTML);
                     setValue(i, k, "*");
                     break;
@@ -230,6 +234,7 @@ function moveLeft(i) {
             }
         }
     }
+    return hasMoved;
 }
 function testMoveLeft() {
     setRow(0, "*", "*", "2", "*");
@@ -241,9 +246,11 @@ function testMoveLeft() {
     }
 }
 function moveUp(j) {
+    var hasMoved = false;
     for (let i = 0; i <= 3; i++) {
         if (getCell(i, j).innerHTML == "*") {
             for (let k = i + 1; k <= 3; k++) {
+                hasMoved = true;
                 if (getCell(k, j).innerHTML != "*") {
                     setValue(i, j, getCell(k, j).innerHTML);
                     setValue(k, j, "*");
@@ -252,6 +259,7 @@ function moveUp(j) {
             }
         }
     }
+    return hasMoved;
 }
 function setCol(j, a, b, c, d) {
     valeur = [a, b, c, d];
@@ -269,10 +277,12 @@ function testMoveUp() {
     }
 }
 function moveDown(j) {
+    var hasMoved = false;
     for (let i = 3; i >= 0; i--) {
         if (getCell(i, j).innerHTML == "*") {
             for (let k = i - 1; k >= 0; k--) {
                 if (getCell(k, j).innerHTML != "*") {
+                    hasMoved = true;
                     setValue(i, j, getCell(k, j).innerHTML);
                     setValue(k, j, "*");
                     break;
@@ -280,6 +290,7 @@ function moveDown(j) {
             }
         }
     }
+    return hasMoved;
 }
 function testMoveDown() {
     setCol(0, "*", "*", "2", "*");
@@ -291,12 +302,15 @@ function testMoveDown() {
     }
 }
 function fusionRight(i) {
+    var hasFused = false;
     for (let j = 3; j >= 1; j--) {
         if ((getCell(i, j).innerHTML == getCell(i, j - 1).innerHTML) && (getCell(i, j).innerHTML != "*")) {
+            hasFused = true;
             setValue(i, j, getCell(i, j).innerHTML * 2);
             setValue(i, j - 1, "*");
         }
     }
+    return hasFused;
 }
 function testFusionRight() {
     setRow(0, "*", "*", "2", "2");
@@ -308,12 +322,15 @@ function testFusionRight() {
     }
 }
 function fusionLeft(i) {
+    var hasFused = false;
     for (let j = 0; j <= 2; j++) {
         if ((getCell(i, j).innerHTML == getCell(i, j + 1).innerHTML) && (getCell(i, j).innerHTML != "*")) {
+            hasFused = true;
             setValue(i, j, getCell(i, j).innerHTML * 2);
             setValue(i, j + 1, "*");
         }
     }
+    return hasFused;
 }
 function testFusionLeft() {
     setRow(0, "*", "*", "2", "2");
@@ -326,12 +343,15 @@ function testFusionLeft() {
 }
 
 function fusionUp(j) {
+    var hasFused = false;
     for (let i = 0; i <= 2; i++) {
         if ((getCell(i, j).innerHTML == getCell(i + 1, j).innerHTML) && (getCell(i, j).innerHTML != "*")) {
+            hasFused = true;
             setValue(i, j, getCell(i, j).innerHTML * 2);
             setValue(i + 1, j, "*");
         }
     }
+    return hasFused;
 }
 function testFusionUp() {
     setCol(0, "*", "*", "2", "2");
@@ -344,12 +364,15 @@ function testFusionUp() {
 }
 
 function fusionDown(j) {
+    var hasFused = false;
     for (let i = 3; i >= 1; i--) {
         if ((getCell(i, j).innerHTML == getCell(i - 1, j).innerHTML) && (getCell(i, j).innerHTML != "*")) {
+            hasFused = true;
             setValue(i, j, getCell(i, j).innerHTML * 2);
             setValue(i - 1, j, "*");
         }
     }
+    return hasFused;
 }
 function testFusionDown() {
     setCol(0, "*", "*", "2", "2");
@@ -361,9 +384,9 @@ function testFusionDown() {
     }
 }
 function right(i) {
-    moveRight(i);
-    fusionRight(i);
-    moveRight(i);
+    console.log(moveRight(i));
+    console.log(fusionRight(i));
+    console.log(moveRight(i));
 }
 function rightAll() {
     for (let i = 0; i < 4; i++) {
@@ -378,9 +401,9 @@ function testRightAll() {
     rightAll();
 }
 function left(i) {
-    moveLeft(i);
-    fusionLeft(i);
-    moveLeft(i);
+    console.log(moveLeft(i));
+    console.log(fusionLeft(i));
+    console.log(moveLeft(i));
 }
 function leftAll() {
     for (let i = 0; i < 4; i++) {
@@ -395,9 +418,9 @@ function testLeftAll() {
     leftAll();
 }
 function up(j) {
-    moveUp(j);
-    fusionUp(j);
-    moveUp(j);
+    console.log(moveUp(j));
+    console.log(fusionUp(j));
+    console.log(moveUp(j));
 }
 function upAll() {
     for (let j = 0; j < 4; j++) {
@@ -412,9 +435,9 @@ function testUpAll() {
     upAll();
 }
 function down(j) {
-    moveDown(j);
-    fusionDown(j);
-    moveDown(j);
+    console.log(moveDown(j));
+    console.log(fusionDown(j));
+    console.log(moveDown(j));
 }
 function downAll() {
     for (let j = 0; j < 4; j++) {
