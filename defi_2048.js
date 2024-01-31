@@ -2,6 +2,7 @@ testBonjour();
 var x = 0;
 
 
+
 window.onload = (event) => {
     console.log('page is fully loaded');
     init();
@@ -18,22 +19,15 @@ function bonjour() {
 function testBonjour() {
     bonjour()
 }
-function haut() {
-    console.log("haut")
-}
-function bas() {
-    console.log("bas")
-}
-function gauche() {
-    console.log("gauche")
-}
-function droite() {
-    console.log("droite")
-}
+function haut() {console.log("haut")}
+function bas() {console.log("bas")}
+function gauche() {console.log("gauche")}
+function droite() {console.log("droite")}
+
 function keytester(event) {
-    if (event.key == "ArrowUp") { haut(); x = x + 1; }
-    if (event.key == "ArrowDown") { bas(); x = x + 1; }
-    if (event.key == "ArrowLeft") { gauche(); x = x + 1; }
+    if (event.key == "ArrowUp") { haut(); upAll(); x = x + 1; }
+    if (event.key == "ArrowDown") { bas(); downAll(); x = x + 1; }
+    if (event.key == "ArrowLeft") { gauche(); leftAll(); x = x + 1; }
     if (event.key == "ArrowRight") { droite(); rightAll(); x = x + 1; }
     if (event.key == "t") { changeTitre("Nouveau titre"); }
     if (event.key == "s") { score(); }
@@ -382,4 +376,55 @@ function testRightAll() {
     setRow(2, "2", "*", "2", "2");
     setRow(3, "4", "2", "*", "4");
     rightAll();
+}
+function left(i) {
+    moveLeft(i);
+    fusionLeft(i);
+    moveLeft(i);
+}
+function leftAll() {
+    for (let i = 0; i < 4; i++) {
+        left(i);
+    }
+}
+function testLeftAll() {
+    setRow(0, "*", "*", "2", "*");
+    setRow(1, "2", "*", "2", "*");
+    setRow(2, "2", "*", "2", "2");
+    setRow(3, "4", "2", "*", "4");
+    leftAll();
+}
+function up(j) {
+    moveUp(j);
+    fusionUp(j);
+    moveUp(j);
+}
+function upAll() {
+    for (let j = 0; j < 4; j++) {
+        up(j);
+    }
+}
+function testUpAll() {
+    setCol(0, "*", "*", "2", "*");
+    setCol(1, "2", "*", "2", "*");
+    setCol(2, "2", "*", "2", "2");
+    setCol(3, "4", "2", "*", "4");
+    upAll();
+}
+function down(j) {
+    moveDown(j);
+    fusionDown(j);
+    moveDown(j);
+}
+function downAll() {
+    for (let j = 0; j < 4; j++) {
+        down(j);
+    }
+}
+function testDownAll() {
+    setCol(0, "*", "*", "2", "*");
+    setCol(1, "2", "*", "2", "*");
+    setCol(2, "2", "*", "2", "2");
+    setCol(3, "4", "2", "*", "4");
+    downAll();
 }
