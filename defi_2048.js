@@ -1,16 +1,16 @@
 var Score = 0;
 var Game_State = [];
-var has_already_won = false;  
+var has_already_won = false;
 
 
 window.onload = (event) => {
     console.log('page is fully loaded');
     if (getCookie('game_state') == null) {
-        Game_State =[["*", "*", "*", "*"],
-                     ["*", "*", "*", "*"],
-                     ["*", "*", "*", "*"],
-                     ["*", "*", "*", "*"],
-                     ["0"]];
+        Game_State = [["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        [0, 0]];
         newGame();
     }
     else {
@@ -18,17 +18,18 @@ window.onload = (event) => {
         /* console.log(typeof Game_State);
         console.log(Game_State.slice(0, 4)); */
         set_Board(Game_State.slice(0, 4));
-        score.innerHTML = Game_State[4][0];
+        console.log("initial" + Game_State);
+        Score = Number(Game_State[4][0]);
         document.getElementById("best-score").innerHTML = Number(Game_State[4][1]);
         colorCells();
     }
     document.addEventListener('keyup', (event) => {
         keytester(event);
     });
-    document.getElementById('new-game-button').addEventListener('click', function() {
-        document.getElementById('game-over-overlay').classList.add('hidden');
-      });
-      document.getElementById('game-over-overlay').classList.add('hidden');
+    document.getElementById('new-game-button').addEventListener('click', function () {
+
+    });
+
 };
 
 
@@ -38,23 +39,37 @@ function keytester(event) {
     if (event.key == "ArrowDown") { bas(); }
     if (event.key == "ArrowLeft") { gauche(); }
     if (event.key == "ArrowRight") { droite(); }
-    if (event.key == "t") { changeTitre("Nouveau titre"); }
-    if (event.key == "s") { score(); }
-    if (event.key == "i") { testInit(); }
-    if (event.key == "a") { testGetRandomInt(); }
-    if (event.key == "r") { 
-    Game_State = getCookie('game_state');
-    console.log(game_state); }
-    if (event.key == "n") { newGame(); }
-    if (event.key == "e") { testisEmpty(); }
-    if (event.key == "c") { save_Game_State(); }
+    if (event.key == "r") {
+        newGame();
+        document.getElementById("best-score").innerHTML = 0;
+    }
+    if (event.key == "t") {
+        Test_Game_State = [["4", "2", "4", "2"],
+        ["2", "4", "2", "4"],
+        ["4", "2", "4", "2"],
+        ["2", "4", "2", "4"],
+        [0, 0]]
+        set_Board(Test_Game_State.slice(0, 4));
+        colorCells();
+    }
+    if (event.key == "g") { GameOver(); }
+    if (event.key == "w") { 
+        Test_Game_State = [["1024", "1024", "1024", "512"],
+        ["32", "64", "128", "256"],
+        ["16", "8", "4", "2"],
+        ["2", "2", "2", "2"],
+        [0, 0]]
+        set_Board(Test_Game_State.slice(0, 4));
+        colorCells();
+     }
+
 }
 function save_Game_State() {
     var valeur = [];
     for (let i = 0; i < 4; i++) {
         valeur.push(showRow(i).split(','));
     }
-    valeur.push([Score,Number(document.getElementById("best-score").innerHTML)]);
+    valeur.push([Score, Number(document.getElementById("best-score").innerHTML)]);
     document.cookie = "game_state = " + JSON.stringify(valeur);
     var cookieValue = document.cookie;
     console.log(cookieValue);
@@ -63,10 +78,10 @@ function save_Game_State() {
 function getCookie(name) {
     let cookieArray = document.cookie.split('; ');
 
-    for(let i = 0; i < cookieArray.length; i++) {
+    for (let i = 0; i < cookieArray.length; i++) {
         let cookiePair = cookieArray[i].split('=');
 
-        if(name == cookiePair[0]) {
+        if (name == cookiePair[0]) {
             return JSON.parse(cookiePair[1]);
         }
     }
@@ -394,6 +409,9 @@ function newGame() {
     has_already_won = false;
     score();
     set_Board();
+    if (document.querySelector('.game-over')) {
+        document.querySelector('.game-over').remove();
+    }
     flag = true;
     while (flag) {
         valeur = []
@@ -426,7 +444,7 @@ function isEmpty(i, j) {
 }
 
 
-function set_Board(Board= null) {
+function set_Board(Board = null) {
     if (Board == null) {
         var Board = [
             ["*", "*", "*", "*"],
@@ -685,39 +703,63 @@ function GameOver() {
                 if (getCell(i, j).innerHTML == "2048") {
                     console.log("Vous avez gagné");
                     has_already_won = true;
+                    // Create win screen
+                    var winScreen = document.createElement('div');
+                    winScreen.className = 'win-screen';
+                    winScreen.innerHTML = 'You won!';
+
+                    // Create continue button
+                    var continueButton = document.createElement('button');
+                    continueButton.innerHTML = 'Continue playing';
+                    continueButton.onclick = function() {
+                        winScreen.remove(); // Remove win screen when continue button is clicked
+                    };
+
+                    // Append continue button to win screen
+                    winScreen.appendChild(continueButton);
+
+                    // Append win screen to game container
+                    var gameContainer = document.querySelector('.game-container');
+                    gameContainer.appendChild(winScreen);
                 }
             }
         }
     }
     if (!hasEmpty()) {
         save_Game_State();
-        if (!leftAll()){
-            if (!rightAll()){
-                if (!upAll()){
-                    if (!downAll()){
+        if (!leftAll()) {
+            if (!rightAll()) {
+                if (!upAll()) {
+                    if (!downAll()) {
                         console.log("Game Over");
-                        document.getElementById('game-over-overlay').classList.remove('hidden');
-                        /* document.getElementById('game-over-overlay').classList.remove('hidden'); */
+                        if (!document.querySelector('.game-over')) {
+                            var gameOverScreen = document.createElement('div');
+                            gameOverScreen.className = 'game-over';
+                            gameOverScreen.innerHTML = 'Game Over';
+                            var gameContainer = document.querySelector('.game-container');
+                            gameContainer.appendChild(gameOverScreen);
+                            /* document.getElementById('game-over-overlay').classList.remove('hidden'); */
+                        }
                     }
                 }
             }
-            }
+        }
         set_Board(Game_State.slice(0, 4));
     }
 }
 
 function colorCells() {
     for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        let cell = getCell(i, j);
-        let value = cell.innerHTML;
-        cell.className = 'cell-' + value;
-        if (value >= 2048) {
-            cell.className = 'cell-2048';
+        for (let j = 0; j < 4; j++) {
+            let cell = getCell(i, j);
+            let value = cell.innerHTML;
+            cell.className = 'cell-' + value;
+            if (value >= 2048) {
+                cell.className = 'cell-2048';
+            }
         }
-      }
     }
-  }
+}
 
 function update() {
     newNumber();
@@ -725,5 +767,5 @@ function update() {
     GameOver();
     colorCells();
     score();
-  }
+}
 //#endregion 
