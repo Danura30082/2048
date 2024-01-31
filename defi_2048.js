@@ -6,12 +6,13 @@ window.onload = (event) => {
     console.log('page is fully loaded');
     // testGetTable ();
     // testGetCell();
-    // testGetValeurCell();
+    // testgetValeur();
     // testsetValue();
     // testShowRow();
     // testShowCol();
     // testSetRow();
-
+    // init();
+    testisEmpty();
 };
 
 document.addEventListener('keyup', (event) => {
@@ -36,41 +37,17 @@ function droite() {
     console.log("droite")
 }
 function keytester(event) {
-    if (event.key == "ArrowUp") {
-        haut()
-        x = x + 1;
-    }
-    if (event.key == "ArrowDown") {
-        bas()
-        x = x + 1;
-    }
-    if (event.key == "ArrowLeft") {
-        gauche()
-        x = x + 1;
-    }
-    if (event.key == "ArrowRight") {
-        droite()
-        x = x + 1;
-    }
-    if (event.key == "t") {
-        changeTitre("Nouveau titre")
-    }
-    if (event.key == "s") {
-
-        score()
-    }
-    if (event.key == "i") {
-        testInit()
-    }
-    if (event.key == "a") {
-        testGetRandomInt()
-    }
-    if (event.key == "r") {
-        testGetRandom2or4()
-    }
-    if (event.key == "n") {
-        newGame()
-    }
+    if (event.key == "ArrowUp") { haut(); x = x + 1; }
+    if (event.key == "ArrowDown") { bas(); x = x + 1; }
+    if (event.key == "ArrowLeft") { gauche(); x = x + 1; }
+    if (event.key == "ArrowRight") { droite(); x = x + 1; }
+    if (event.key == "t") { changeTitre("Nouveau titre"); }
+    if (event.key == "s") { score(); }
+    if (event.key == "i") { testInit(); }
+    if (event.key == "a") { testGetRandomInt(); }
+    if (event.key == "r") { testGetRandom2or4(); }
+    if (event.key == "n") { newGame(); }
+    if (event.key == "e") { testisEmpty(); }
 }
 function changeTitre(Nouveau_titre) {
     title = document.getElementById("titre");
@@ -100,14 +77,14 @@ function testGetCell() {
     console.log(parseInt(getCell(2, 0).innerHTML) + 1);
 }
 
-function getValeurCell(i, j) {
+function getValeur(i, j) {
     return parseInt(getCell(i, j).innerHTML);
 }
-function testGetValeurCell() {
-    console.log(getValeurCell(0, 0));
-    console.log(getValeurCell(1, 1));
-    console.log(getValeurCell(2, 2));
-    console.log(getValeurCell(3, 3));
+function testgetValeur() {
+    console.log(getValeur(0, 0));
+    console.log(getValeur(1, 1));
+    console.log(getValeur(2, 2));
+    console.log(getValeur(3, 3));
 }
 function setValue(i, j, valeur) {
     getCell(i, j).innerHTML = valeur;
@@ -159,10 +136,11 @@ function testSetRow() {
 }
 function init() {
     var tab = [
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11, 12],
-        [13, 14, 15, 16]
+        ["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        ["*", "*", "*", "*"],
+        ["*", "*", "*", "*"]
+
     ];
 
     for (let i = 0; i <= 3; i++) {
@@ -209,4 +187,24 @@ function newGame() {
             flag = false;
         }
     }
+}
+function isEmpty(i, j) {
+    if (getCell(i, j).innerHTML == "*") {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function testisEmpty() {
+    init();
+    newGame();
+    for (let i = 0; i <= 3; i++) {
+        for (let j = 0; j <= 3; j++) {
+            if (isEmpty(i, j)) {
+                console.log("la case [" + i + "][" + j + "] est vide");
+            }
+        }
+    }
+    
 }
