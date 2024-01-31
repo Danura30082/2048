@@ -4,11 +4,11 @@ var x = 0;
 
 window.onload = (event) => {
     console.log('page is fully loaded');
-    testGetTable ();
-    testGetCell();
+    // testGetTable ();
+    // testGetCell();
     testgetValeurCell();
-    testsetValeurCell();
-
+    // testsetValeurCell();
+    testshowRow();
     
 };
 
@@ -104,4 +104,19 @@ function testsetValeurCell(){
     setValeurCell(1,1,2);
     setValeurCell(2,2,3);
     setValeurCell(3,3,4);
+}
+function showRow(i){
+    valeur = "";
+    for (j=0;j<4;j++){
+        valeur+=getCell(i,j).innerHTML+" ";
+    
+    }
+    console.log(valeur);
+    
+}
+function testshowRow(){
+    showRow(0);
+    showRow(1);
+    showRow(2);
+    showRow(3);
 }
