@@ -8,6 +8,7 @@ window.onload = (event) => {
     init();
     newGame();
     testFusionUp();
+    testHasEmpty();
 };
 
 document.addEventListener('keyup', (event) => {
@@ -479,4 +480,26 @@ function testDownAll() {
     setCol(2, "2", "*", "2", "2");
     setCol(3, "4", "2", "*", "4");
     downAll();
+}
+function hasEmpty(){
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j <= 3; j++) {
+            if (isEmpty(i, j)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+function testHasEmpty(){
+    setCol(0, "1", "2", "3", "4");
+    setCol(1, "5", "6", "7", "8");
+    setCol(2, "9", "10", "11", "12");
+    setCol(3, "13", "14", "15", "16");
+    console.log("isempty:",hasEmpty());
+    setCol(0, "1", "2", "3", "4");
+    setCol(1, "5", "6", "7", "8");
+    setCol(2, "9", "10", "11", "12");
+    setCol(3, "13", "14", "15", "*");
+    console.log("isempty:",hasEmpty());
 }
